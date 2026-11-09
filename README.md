@@ -2,7 +2,7 @@
 
 A Weidu Lab browser extension for hiding selected parts of YouTube and Reddit and cleaning share links. It is free to try and needs no separate account. This is the first beta, version 0.2.0.
 
-Open [the demo](docs/index.html) to try the controls on sample pages and clean a real share link without installing the extension.
+Open [the public demo](https://weidufanling.github.io/algorithmic-freedom-layer/) to try the controls on sample pages and clean a real share link without installing the extension.
 
 ## What you can do
 
@@ -34,29 +34,29 @@ The extension works on web pages. It does not automate engagement or change your
 
 The beta is an unpacked developer build for desktop browsers. The Chrome Web Store, Firefox Add-ons and Safari App Store have separate review and signing processes. See the [verification record](VERIFICATION.md) for the difference between a supported install route and a browser we tested.
 
-Unzip the project. The `extension/` folder contains the manifest and all browser files. You can load this folder as-is.
+Download and unzip the [beta extension ZIP](https://github.com/weidufanling/algorithmic-freedom-layer/releases/tag/v0.2.0). Select the unzipped folder containing `manifest.json`. If you download the full source instead, select its `extension/` folder.
 
 ### Chrome or Brave on desktop
 
 1. Open `chrome://extensions` in Chrome or `brave://extensions` in Brave.
-2. Turn on **Developer mode**, choose **Load unpacked**, and select `extension/`.
+2. Turn on **Developer mode**, choose **Load unpacked**, and select the folder containing `manifest.json`.
 3. Open the extension from the browser’s Extensions menu. If a supported page was open during installation, reload it. [Chrome’s local loading guide](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
 
 ### Firefox on desktop
 
 1. Open `about:debugging#/runtime/this-firefox`.
-2. Choose **Load Temporary Add-on** and select `extension/manifest.json`.
+2. Choose **Load Temporary Add-on** and select `manifest.json` in the unzipped folder.
 3. Open the extension from the Extensions menu. Reload any already open supported pages. Firefox removes a temporary add-on on restart. [Mozilla’s temporary installation guide](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/)
 
 ### Safari on Mac for a quick test
 
 1. Open **Safari > Settings > Advanced** and enable **Show features for web developers**.
-2. In **Settings > Developer**, choose **Add Temporary Extension** if your Safari version offers it. Select `extension/` and follow Safari’s unsigned-extension prompt.
+2. In **Settings > Developer**, choose **Add Temporary Extension** if your Safari version offers it. Select the folder containing `manifest.json` and follow Safari’s unsigned-extension prompt.
 3. In **Settings > Extensions**, enable the extension if needed. Visit YouTube or Reddit and grant access to the site you want to test. Safari removes a temporary extension at quit or after 24 hours. [Apple’s instructions for temporary and unsigned extensions](https://developer.apple.com/documentation/safariservices/running-your-safari-web-extension)
 
 ### Package for Mac, iPhone and iPad with Xcode
 
-Use the full Xcode app on a Mac. Open Xcode once to finish setup. For iPhone or iPad simulator testing, install the corresponding iOS simulator runtime in Xcode. Run these commands from the unzipped project folder.
+Use the full Xcode app on a Mac. Open Xcode once to finish setup. For iPhone or iPad simulator testing, install the corresponding iOS simulator runtime in Xcode. Download the full source and run these commands from the unzipped project folder.
 
 ```sh
 mkdir -p safari-project
