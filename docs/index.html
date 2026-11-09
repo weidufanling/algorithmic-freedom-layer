@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Try the Weidu Lab browser extension for hiding parts of YouTube and Reddit and cleaning share links.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <title>Algorithmic Freedom Layer | Weidu Lab</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="clean-link.js"></script>
+  <script defer src="release-links.js"></script>
+  <script defer src="demo.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to main content</a>
+  <header class="masthead wrap">
+    <a class="wordmark" href="#main"><span class="mark" aria-hidden="true"></span> Weidu Lab</a>
+    <nav aria-label="Page sections">
+      <a href="#try">Try it</a>
+      <a href="#install">Install</a>
+      <a href="#feedback">Feedback</a>
+    </nav>
+  </header>
+
+  <main class="wrap" id="main" tabindex="-1">
+    <section class="hero" aria-labelledby="title">
+      <div class="intro">
+        <p class="eyebrow">Stage 1 <span aria-hidden="true">/</span> Beta</p>
+        <h1 id="title">Algorithmic<br>Freedom Layer</h1>
+        <p class="lead">Hide Shorts, recommendations and trending shelves on the sites you browse. Clean a share link before you send it.</p>
+        <div class="actions">
+          <a class="button primary" href="#try">Try the demo</a>
+          <a class="text-link" href="#install">Get the extension <span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+      <aside class="hero-note" aria-labelledby="scope-title">
+        <p class="eyebrow">What changes</p>
+        <h2 id="scope-title">The page you see</h2>
+        <p>The extension hides selected parts of a webpage. You can turn each change off from the toolbar.</p>
+        <p>Your choices stay in your browser. The extension has no account or analytics.</p>
+      </aside>
+    </section>
+
+    <section class="section" id="try" aria-labelledby="try-title">
+      <header class="section-header">
+        <p class="eyebrow">01 <span aria-hidden="true">/</span> Try it</p>
+        <h2 id="try-title">See what the switches do</h2>
+        <p>These are sample pages. The switches below change the examples, and the link cleaner works on real links. You can use both without installing anything.</p>
+      </header>
+
+      <noscript><p class="notice">Turn on JavaScript to use the switches and link cleaner.</p></noscript>
+      <div class="samples">
+        <section class="sample" aria-labelledby="youtube-title">
+          <header class="sample-header">
+            <h3 id="youtube-title">YouTube</h3>
+            <span class="badge">Sample watch page</span>
+          </header>
+          <fieldset class="switches">
+            <legend class="sr-only">YouTube sample controls</legend>
+            <label class="switch">
+              <input type="checkbox" data-hides="sample-shorts" disabled>
+              <span>Hide Shorts</span>
+            </label>
+            <label class="switch">
+              <input type="checkbox" data-hides="sample-recommendations" disabled>
+              <span>Hide recommendations</span>
+            </label>
+          </fieldset>
+          <div class="sample-screen">
+            <div class="example keep">
+              <span class="glyph" aria-hidden="true">▶</span>
+              <div><strong>Restoring a garden path</strong><span>Video you opened</span></div>
+            </div>
+            <div class="example" id="sample-shorts">
+              <span class="glyph" aria-hidden="true">▥</span>
+              <div><strong>Shorts shelf</strong><span>Three short videos</span></div>
+            </div>
+            <div class="example" id="sample-recommendations">
+              <span class="glyph" aria-hidden="true">≡</span>
+              <div><strong>Recommended videos</strong><span>Suggestions next to the video</span></div>
+            </div>
+            <p class="screen-status" id="youtube-status" role="status">Both shelves are visible.</p>
+          </div>
+        </section>
+
+        <section class="sample" aria-labelledby="reddit-title">
+          <header class="sample-header">
+            <h3 id="reddit-title">Reddit</h3>
+            <span class="badge">Sample feed</span>
+          </header>
+          <fieldset class="switches">
+            <legend class="sr-only">Reddit sample controls</legend>
+            <label class="switch">
+              <input type="checkbox" data-hides="sample-trending" disabled>
+              <span>Hide trending shelves</span>
+            </label>
+          </fieldset>
+          <div class="sample-screen">
+            <div class="example" id="sample-trending">
+              <span class="glyph" aria-hidden="true">↑</span>
+              <div><strong>Trending today</strong><span>A shelf of popular topics</span></div>
+            </div>
+            <div class="example keep">
+              <span class="glyph" aria-hidden="true">◇</span>
+              <div><strong>How do you start a seed swap?</strong><span>Post in the feed</span></div>
+            </div>
+            <div class="example keep">
+              <span class="glyph" aria-hidden="true">◇</span>
+              <div><strong>A month of balcony gardening</strong><span>Post in the feed</span></div>
+            </div>
+            <p class="screen-status" id="reddit-status" role="status">The trending shelf is visible.</p>
+          </div>
+        </section>
+      </div>
+
+      <section class="cleaner" aria-labelledby="cleaner-title">
+        <div class="cleaner-intro">
+          <p class="eyebrow">Share links</p>
+          <h3 id="cleaner-title">Try cleaning a link</h3>
+          <p>The cleaner removes selected tracking fields from direct YouTube video and Reddit post links. It works in this page without opening or sending the link anywhere.</p>
+        </div>
+        <div>
+          <form id="cleaner" autocomplete="off">
+            <label for="original-link">Link to clean</label>
+            <textarea id="original-link" rows="2" placeholder="Paste a YouTube or Reddit link" spellcheck="false" autocapitalize="off" autocorrect="off" disabled></textarea>
+            <div class="actions compact">
+              <button class="button primary" type="submit" id="clean-submit" disabled>Clean link</button>
+              <button class="button secondary" type="button" id="example-link" disabled>Use an example</button>
+            </div>
+          </form>
+          <div id="cleaned-result" hidden>
+            <label for="cleaned-link">Link to copy</label>
+            <textarea id="cleaned-link" rows="2" readonly spellcheck="false"></textarea>
+            <button class="button secondary" type="button" id="copy-link">Copy link</button>
+          </div>
+          <p class="screen-status" id="link-status" role="status"></p>
+        </div>
+      </section>
+    </section>
+
+    <section class="section" id="install" aria-labelledby="install-title">
+      <header class="section-header">
+        <p class="eyebrow">02 <span aria-hidden="true">/</span> Install</p>
+        <h2 id="install-title">Try the extension on real pages</h2>
+      </header>
+      <div class="install-grid">
+        <section class="panel" aria-labelledby="chromium-title">
+          <h3 id="chromium-title">Desktop Chromium browsers</h3>
+          <p>Use the unpacked build on a desktop browser that allows developer extensions. Open the browser’s Extensions page, turn on Developer mode and select <strong>Load unpacked</strong>. Choose the unzipped folder containing <code>manifest.json</code>.</p>
+          <a class="text-link" id="download-link" hidden>Download the beta build <span aria-hidden="true">↓</span></a>
+          <p id="download-pending" class="small">The download link will appear here when a release is available.</p>
+        </section>
+        <section class="panel" aria-labelledby="other-title">
+          <h3 id="other-title">Firefox and Safari</h3>
+          <p>Firefox desktop can load a temporary build for testing. It removes the extension when you restart Firefox. Safari on Mac needs an app build or a compatible temporary test setup. Safari on iPhone and iPad needs a separate Apple app build and distribution.</p>
+          <p>The controls work on web pages. They do not change the native YouTube or Reddit apps.</p>
+        </section>
+      </div>
+      <p class="small install-note">Site layouts can change, so a switch may miss some shelves. AFL does not change how either site ranks content on its servers.</p>
+    </section>
+
+    <section class="section feedback" id="feedback" aria-labelledby="feedback-title">
+      <div>
+        <p class="eyebrow">03 <span aria-hidden="true">/</span> Feedback</p>
+        <h2 id="feedback-title">Tell us what worked</h2>
+        <p>If a switch misses a shelf or hides something you expected to keep, tell us the browser, the page type and the switch you used. Leave out private links, account details and screenshots with personal information.</p>
+      </div>
+      <div class="feedback-links">
+        <a class="button primary" id="feedback-link" hidden>Give feedback</a>
+        <a class="button secondary" id="source-link" hidden>View source and install notes</a>
+        <p class="small" id="feedback-pending" hidden>The GitHub issue tracker is pending.</p>
+        <p class="small">You can also post in <a href="https://discord.gg/vQN7M84crF">Weidu Commons on Discord</a> in <strong>#the-workshop</strong>. Posting on Discord requires an account.</p>
+        <p class="small" id="source-pending">The repository link will appear here when it is available.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    <span>Weidu Lab</span>
+    <span>Algorithmic Freedom Layer</span>
+  </footer>
+</body>
+</html>
