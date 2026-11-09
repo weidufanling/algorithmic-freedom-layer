@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Content filter fixture</title></head>
+<body>
+  <nav aria-label="Main navigation">
+    <ytd-guide-entry-renderer id="shorts-guide"><a href="/shorts">Shorts</a></ytd-guide-entry-renderer>
+    <ytd-mini-guide-entry-renderer id="shorts-mini-guide"><a href="/shorts/abc">Shorts</a></ytd-mini-guide-entry-renderer>
+    <ytd-guide-entry-renderer id="subscriptions-guide"><a href="/feed/subscriptions">Subscriptions</a></ytd-guide-entry-renderer>
+    <ytm-pivot-bar-item-renderer id="mobile-shorts-guide"><div class="pivot-bar-item-tab shorts" role="tab">Shorts</div></ytm-pivot-bar-item-renderer>
+  </nav>
+  <ytd-browse page-subtype="home">
+    <ytd-rich-grid-renderer id="home-grid">
+      <ytd-rich-item-renderer id="short-card"><a href="/shorts/abc">A short</a></ytd-rich-item-renderer>
+      <ytd-rich-item-renderer id="normal-card"><a href="/watch?v=abc">A video</a></ytd-rich-item-renderer>
+      <ytd-rich-shelf-renderer id="old-shorts-shelf" is-shorts>Shorts</ytd-rich-shelf-renderer>
+      <grid-shelf-view-model id="new-shorts-shelf">
+        <ytm-shorts-lockup-view-model-v2><a href="/shorts/abc">A short</a></ytm-shorts-lockup-view-model-v2>
+      </grid-shelf-view-model>
+      <grid-shelf-view-model id="mixed-shelf">
+        <ytm-shorts-lockup-view-model id="mixed-short"><a href="/shorts/abc">A short</a></ytm-shorts-lockup-view-model>
+        <a id="mixed-video" href="/watch?v=abc">A video</a>
+      </grid-shelf-view-model>
+      <ytd-reel-shelf-renderer id="playables-shelf"><mini-game-card-view-model>Game</mini-game-card-view-model></ytd-reel-shelf-renderer>
+      <section id="unknown-shelf"><h2>Shorts</h2><p>Unknown component</p></section>
+    </ytd-rich-grid-renderer>
+  </ytd-browse>
+  <ytd-browse page-subtype="subscriptions">
+    <ytd-rich-grid-renderer id="subscriptions-grid"><a href="/watch?v=abc">Subscribed video</a></ytd-rich-grid-renderer>
+  </ytd-browse>
+  <ytm-rich-grid-renderer id="mobile-home-grid">
+    <ytm-reel-shelf-renderer id="mobile-shorts-shelf"><a href="/shorts/abc">A short</a></ytm-reel-shelf-renderer>
+    <ytm-rich-item-renderer id="mobile-short-card" class="is-shorts">A short</ytm-rich-item-renderer>
+  </ytm-rich-grid-renderer>
+  <ytd-watch-flexy>
+    <video id="player" controls></video>
+    <section id="comments">Comments</section>
+    <section id="related">Related videos</section>
+    <ytd-playlist-panel-renderer id="playlist">Playlist</ytd-playlist-panel-renderer>
+  </ytd-watch-flexy>
+  <ytm-item-section-renderer id="mobile-related" section-identifier="related-items">Related videos</ytm-item-section-renderer>
+  <ytm-item-section-renderer id="mobile-comments" section-identifier="comments-entry-point">Comments</ytm-item-section-renderer>
+  <form role="search"><input id="reddit-search" type="search" aria-label="Search Reddit"></form>
+  <div id="search-dropdown-results-container">
+    <h2 id="section_0_pipeline_1_trending_query">Trending Today</h2>
+    <a id="trending-result" href="/search/?q=news&amp;source=trending">A trending search</a>
+    <a id="autocomplete" href="/search/?q=trees&amp;source=autocomplete">An ordinary suggestion</a>
+    <a id="nontrending-result" href="/search/?q=trees&amp;source=trending_test">An ordinary result with a similar parameter</a>
+  </div>
+  <trending-today id="reddit-trending">Trending Today</trending-today>
+  <section id="reddit-popular"><h2>Popular communities</h2></section>
+  <article id="reddit-post"><h2>Trending Today</h2><p>An ordinary post with the same heading</p></article>
+</body>
+</html>
