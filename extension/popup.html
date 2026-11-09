@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algorithmic Freedom Layer</title>
+  <link rel="stylesheet" href="popup.css">
+  <script src="settings.js" defer></script>
+  <script src="clean-link.js" defer></script>
+  <script src="reddit-feed.js" defer></script>
+  <script src="popup.js" defer></script>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="brand">Weidu Lab · Beta</p>
+      <h1>Algorithmic Freedom Layer</h1>
+      <p>Choose what to hide on YouTube and Reddit. Your choices stay in this browser.</p>
+    </header>
+
+    <fieldset>
+      <legend>YouTube</legend>
+      <label class="choice">
+        <input type="checkbox" id="youtubeShorts" disabled>
+        <span>Hide Shorts</span>
+      </label>
+      <label class="choice">
+        <input type="checkbox" id="youtubeRecommendations" aria-describedby="youtube-note" disabled>
+        <span>Hide recommendations</span>
+      </label>
+      <p class="note" id="youtube-note">Hides the main Home feed and watch-page suggestions on supported layouts. The Home feed can also include subscriptions and news.</p>
+    </fieldset>
+
+    <fieldset>
+      <legend>Reddit</legend>
+      <label class="choice">
+        <input type="checkbox" id="redditTrending" disabled>
+        <span>Hide trending shelves</span>
+      </label>
+      <p class="note" id="reddit-new-feed" hidden>
+        <a id="reddit-new-link" target="_blank" rel="noopener noreferrer">Open Reddit’s New feed</a>
+        <span id="reddit-new-current" hidden>You’re on this community’s New feed.</span>
+        <span>Reddit sorts this community’s posts newest first.</span>
+      </p>
+    </fieldset>
+
+    <p class="status" id="settings-status" role="status"></p>
+
+    <section aria-labelledby="cleaner-title">
+      <h2 id="cleaner-title">Clean a share link</h2>
+      <p class="note" id="cleaner-note">Removes selected tracking fields from supported YouTube and Reddit links.</p>
+      <form id="cleaner">
+        <label for="original-link">Link to clean</label>
+        <textarea id="original-link" rows="2" spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off" aria-describedby="cleaner-note" placeholder="Paste a link"></textarea>
+        <div class="buttons">
+          <button type="submit">Clean link</button>
+          <button type="button" id="use-tab" disabled>Use current tab</button>
+        </div>
+      </form>
+      <p class="status" id="link-status" role="status"></p>
+      <div id="cleaned-result" hidden>
+        <label for="cleaned-link">Link to copy</label>
+        <textarea id="cleaned-link" rows="2" readonly spellcheck="false"></textarea>
+        <button type="button" id="copy-link">Copy link</button>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

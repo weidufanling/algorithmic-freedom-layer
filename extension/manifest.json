@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Algorithmic Freedom Layer",
+  "version": "0.2.0",
+  "description": "Weidu Lab beta for hiding selected parts of YouTube and Reddit and cleaning supported share links.",
+  "permissions": ["storage", "activeTab"],
+  "action": {
+    "default_title": "Algorithmic Freedom Layer",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.youtube.com/*",
+        "https://m.youtube.com/*",
+        "https://www.reddit.com/*"
+      ],
+      "css": ["content.css"],
+      "js": ["settings.js", "content.js", "reddit-feed.js", "reddit-evidence.js"],
+      "run_at": "document_start"
+    }
+  ]
+}
