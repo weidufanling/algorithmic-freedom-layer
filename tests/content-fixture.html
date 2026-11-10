@@ -32,12 +32,12 @@
     <ytm-rich-item-renderer id="mobile-short-card" class="is-shorts">A short</ytm-rich-item-renderer>
   </ytm-rich-grid-renderer>
   <ytd-watch-flexy>
-    <video id="player" controls></video>
+    <div id="movie_player"><video id="player" controls></video></div>
     <section id="comments">Comments</section>
-    <section id="related">Related videos</section>
+    <section id="related"><a href="/watch?v=related1">A related video</a></section>
     <ytd-playlist-panel-renderer id="playlist">Playlist</ytd-playlist-panel-renderer>
   </ytd-watch-flexy>
-  <ytm-item-section-renderer id="mobile-related" section-identifier="related-items">Related videos</ytm-item-section-renderer>
+  <ytm-item-section-renderer id="mobile-related" section-identifier="related-items"><a href="/watch?v=related2">A related video</a></ytm-item-section-renderer>
   <ytm-item-section-renderer id="mobile-comments" section-identifier="comments-entry-point">Comments</ytm-item-section-renderer>
   <form role="search"><input id="reddit-search" type="search" aria-label="Search Reddit"></form>
   <div id="search-dropdown-results-container">
@@ -46,8 +46,10 @@
     <a id="autocomplete" href="/search/?q=trees&amp;source=autocomplete">An ordinary suggestion</a>
     <a id="nontrending-result" href="/search/?q=trees&amp;source=trending_test">An ordinary result with a similar parameter</a>
   </div>
-  <trending-today id="reddit-trending">Trending Today</trending-today>
+  <trending-today id="reddit-trending"><a href="/search/?q=news&amp;source=trending">A trending topic</a></trending-today>
   <section id="reddit-popular"><h2>Popular communities</h2></section>
-  <article id="reddit-post"><h2>Trending Today</h2><p>An ordinary post with the same heading</p></article>
+  <shreddit-post post-id="t3_sample" permalink="/r/example/comments/sample/topic/">
+    <article id="reddit-post"><h2>Trending Today</h2><p>An ordinary post with the same heading</p></article>
+  </shreddit-post>
 </body>
 </html>
