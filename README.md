@@ -1,20 +1,23 @@
 # Algorithmic Freedom Layer
 
-A Weidu Lab browser extension for hiding selected parts of YouTube and Reddit and cleaning share links. It is free to try and needs no separate account. This is the first beta, version 0.2.0.
+A Weidu Lab browser extension for hiding selected parts of YouTube and Reddit and cleaning share links. It is free to try and needs no separate account. This source contains the 0.3.0 test build.
 
-Open [the public demo](https://weidufanling.github.io/algorithmic-freedom-layer/) to try the controls on sample pages and clean a real share link without installing the extension.
+Open [the public 0.2.0 demo](https://weidufanling.github.io/algorithmic-freedom-layer/) to try the original controls on sample pages and clean a real share link without installing the extension.
 
 ## What you can do
 
 | Control | What happens |
 | --- | --- |
 | **Hide Shorts** | Hides recognized Shorts shelves and cards on YouTube Home, Search and watch pages, plus recognized Shorts shortcuts in the main navigation. You can still open a Shorts URL directly. |
-| **Hide recommendations** | Hides the recognized video feed on YouTube Home and related suggestions on watch pages. Home mixes recommendations with other material, so this switch can also hide videos from channels you follow when they appear on Home. Your separate Subscriptions page remains available. |
+| **Hide the Home feed** | Hides the recognized video feed on YouTube Home. That feed can include videos from channels you follow and news. Your separate Subscriptions page remains available. |
+| **Hide suggestions on watch pages** | Hides the recognized suggestions beside or below a video. This has its own switch and leaves the Home feed alone. |
 | **Hide trending shelves** | Hides recognized Reddit trending shelves where the site uses a dedicated trending component. |
 | **Open Reddit’s New feed** | When the current community listing exposes a link to its New feed, the popup offers to open that feed in a new tab. The popup can also identify when you are already there. If the shortcut is missing, try opening Reddit’s sort menu and then reopen the popup. Reddit serves the feed and applies its normal access rules. [Reddit’s guide to sorting community posts](https://support.reddithelp.com/hc/en-us/articles/360045989712-Why-can-t-I-see-my-post) |
 | **Clean link** | Previews a copy of a supported YouTube or Reddit link with known tracking parameters removed. |
 
-All three hide controls start off. They work on supported layouts at `www.youtube.com`, `m.youtube.com` and `www.reddit.com`. Layouts can vary by device, account, region or experiment. The filters leave unfamiliar page elements visible. YouTube and Reddit still select and order the content they send. The popup describes the areas you can hide. For how YouTube describes those areas and the signals it uses across recommendations, see [YouTube’s recommendations guide](https://support.google.com/youtube/answer/16089387).
+All four hide controls start off on a fresh install. When updating an existing install, the old recommendations choice carries over to both new switches until you change them individually. The filters work on supported layouts at `www.youtube.com`, `m.youtube.com` and `www.reddit.com`. Layouts can vary by device, account, region or experiment. The filters leave unfamiliar page elements visible. YouTube and Reddit still select and order the content they send. [YouTube’s recommendations guide](https://support.google.com/youtube/answer/16089387)
+
+The **On this page** section of the popup shows whether AFL is hiding a section, the switch is off, the section is missing, or the layout could not be recognised. If the browser withholds access to a tab, AFL says it could not check it.
 
 ## Clean a link
 
@@ -26,7 +29,7 @@ For example, `https://youtu.be/dQw4w9WgXcQ?si=example&t=42#part` becomes `https:
 
 ## Privacy and permissions
 
-The extension stores the three on/off preferences locally in your browser. It keeps link input and results in the popup while it is open. It sends no telemetry and has no remote service. The browser can give it the current tab URL when you open the popup. It uses this to check for Reddit’s New link on the current community listing and to fill the link field on request. The site filters need access to the supported YouTube and Reddit pages to hide elements there. It uses ordinary paste and only attempts to write the clipboard when you choose **Copy link**. Opening Reddit’s New feed makes a normal browser visit to Reddit.
+The extension stores the on/off preferences locally in your browser. It keeps link input and results in the popup while it is open. It sends no telemetry and has no remote service. The browser can give it the current tab URL when you open the popup. AFL uses the current tab for filter status, Reddit’s New feed shortcut and the **Use current tab** button. It uses ordinary paste and only attempts to write the clipboard when you choose **Copy link**. Opening Reddit’s New feed makes a normal browser visit to Reddit.
 
 The extension works on web pages. It does not automate engagement or change your account preferences. Disabling a switch restores the corresponding page elements. To stop all filtering, disable the extension and reload any affected tabs.
 
@@ -34,7 +37,7 @@ The extension works on web pages. It does not automate engagement or change your
 
 The beta is an unpacked developer build for desktop browsers. The Chrome Web Store, Firefox Add-ons and Safari App Store have separate review and signing processes. See the [verification record](VERIFICATION.md) for the difference between a supported install route and a browser we tested.
 
-Download and unzip the [beta extension ZIP](https://github.com/weidufanling/algorithmic-freedom-layer/releases/tag/v0.2.0). Select the unzipped folder containing `manifest.json`. If you download the full source instead, select its `extension/` folder.
+For this test build, select the unzipped folder containing `manifest.json`. From the full source, select its `extension/` folder. If you already have AFL installed in that browser, disable the older copy before loading a separate test copy. The [public 0.2.0 beta](https://github.com/weidufanling/algorithmic-freedom-layer/releases/tag/v0.2.0) has the original combined recommendations switch.
 
 ### Chrome or Brave on desktop
 

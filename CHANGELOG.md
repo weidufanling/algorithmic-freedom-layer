@@ -1,5 +1,11 @@
 # Changes
 
+## 0.3.0 test build
+
+- Switch the YouTube Home feed and watch-page suggestions on or off separately.
+- Carry over the old recommendations choice to both switches when updating.
+- Show what AFL could check and hide on the current page.
+
 ## 0.2.0 beta
 
 - Hide recognized YouTube Shorts, YouTube recommendations and Reddit trending shelves with separate controls.
