@@ -7,43 +7,77 @@ const linkStatus = byId("link-status");
 const originalLink = byId("original-link");
 const cleanedLink = byId("cleaned-link");
 const result = byId("cleaned-result");
+const useTab = byId("use-tab");
+const pageStatusMessage = byId("page-status-message");
+const pageStatusList = byId("page-status-list");
+const keys = Object.keys(afl.defaults);
+const filtersBySite = new Map([
+  ["youtube", ["youtubeShorts", "youtubeHome", "youtubeWatchRecommendations"]],
+  ["reddit", ["redditTrending"]],
+]);
+const statusCopy = new Map([
+  ["hidden", "Hidden on this page."],
+  ["off", "Switch is off."],
+  ["absent", "No matching section on this page."],
+  ["unrecognized", "AFL does not recognise this layout."],
+  ["not-applicable", "Doesn’t apply on this page."],
+]);
+const pendingWrites = new Map();
+let lastSettings;
+let currentTab;
+let tabRequest = 0;
 
-async function initSettings() {
-  const updated = new Set();
-  try {
-    afl.api.storage.onChanged.addListener((changes, area) => {
-      if (area !== "local") return;
-      for (const name of Object.keys(afl.defaults)) {
-        if (!Object.hasOwn(changes, name)) continue;
-        updated.add(name);
-        byId(name).checked = changes[name].newValue === true;
+function saveChoice(name, control) {
+  const requested = control.checked;
+  const previous = pendingWrites.get(name) ?? Promise.resolve();
+  settingsStatus.textContent = "";
+
+  // Serialize writes for this switch so a later choice is always saved last.
+  const saved = previous.then(async () => {
+    if (pendingWrites.get(name) !== saved) return;
+
+    let fallback = lastSettings[name];
+    try {
+      await afl.api.storage.local.set({ [name]: requested });
+      fallback = requested;
+    } catch {
+      if (pendingWrites.get(name) === saved) {
+        settingsStatus.textContent = "Couldn’t save that choice. Try again.";
       }
-    });
-    const settings = await afl.loadSettings();
-    for (const [name, value] of Object.entries(settings)) {
-      const control = byId(name);
-      if (!updated.has(name)) control.checked = value;
-      control.disabled = false;
-      control.addEventListener("change", async () => {
-        const requested = control.checked;
-        settingsStatus.textContent = "";
-        try {
-          await afl.api.storage.local.set({ [name]: requested });
-        } catch {
-          if (control.checked === requested) {
-            try {
-              control.checked = (await afl.loadSettings())[name];
-            } catch {
-              control.checked = !requested;
-            }
-          }
-          settingsStatus.textContent = "Couldn’t save that choice. Try again.";
-        }
-      });
     }
-  } catch {
-    settingsStatus.textContent = "Couldn’t load your choices. Reopen the extension to try again.";
+    if (pendingWrites.get(name) !== saved) return;
+
+    // Another popup may have saved a choice while this write was pending.
+    const beforeRead = lastSettings;
+    const latest = await afl.loadSettings().catch(() => undefined);
+    if (pendingWrites.get(name) !== saved) return;
+    pendingWrites.delete(name);
+    const observed = beforeRead === lastSettings ? latest : lastSettings;
+    control.checked = observed?.[name] ?? fallback;
+    if (!pendingWrites.size) void refreshCurrentTab();
+  });
+  pendingWrites.set(name, saved);
+}
+
+function initSettings() {
+  for (const name of keys) {
+    const control = byId(name);
+    control.addEventListener("change", () => saveChoice(name, control));
   }
+
+  afl.watchSettings((settings) => {
+    const previous = lastSettings;
+    lastSettings = settings;
+    if (!previous) settingsStatus.textContent = "";
+    for (const name of keys) {
+      const control = byId(name);
+      if (!pendingWrites.has(name)) control.checked = settings[name];
+      control.disabled = false;
+    }
+    if (previous && !pendingWrites.size) void refreshCurrentTab();
+  }, () => {
+    settingsStatus.textContent = "Couldn’t load your choices. Reopen the extension to try again.";
+  });
 }
 
 function clearResult() {
@@ -52,30 +86,82 @@ function clearResult() {
   linkStatus.textContent = "";
 }
 
-async function initCurrentTab() {
-  const useTab = byId("use-tab");
-  try {
-    const [tab] = await afl.api.tabs.query({ active: true, currentWindow: true });
-    if (!/^https?:\/\//i.test(tab?.url ?? "")) return;
+function showPageStatus(report, unavailable = "AFL could not check this tab. On YouTube or Reddit, check site access and reload the page.") {
+  const activeKeys = filtersBySite.get(report?.site);
+  const recognised = activeKeys?.every((key) => statusCopy.has(report.filters?.[key]));
+  const message = recognised ? "" : unavailable;
+  if (pageStatusMessage.textContent !== message) pageStatusMessage.textContent = message;
+  pageStatusMessage.hidden = Boolean(recognised);
+  pageStatusList.hidden = !recognised;
+  for (const key of keys) {
+    const row = byId(`page-${key}`);
+    row.hidden = !recognised || !activeKeys.includes(key);
+    if (row.hidden) continue;
+    const label = byId(`state-${key}`);
+    const text = statusCopy.get(report.filters[key]);
+    if (label.textContent !== text) label.textContent = text;
+  }
+}
 
-    useTab.disabled = false;
-    useTab.addEventListener("click", () => {
-      clearResult();
-      originalLink.value = tab.url;
-      originalLink.focus();
-    });
-    const feed = afl.redditNewFeed(tab.url);
-    if (feed && tab.id != null && await afl.api.tabs.sendMessage(tab.id, "afl:has-reddit-new")) {
-      const link = byId("reddit-new-link");
-      link.href = feed.url;
-      link.hidden = feed.current;
-      byId("reddit-new-current").hidden = !feed.current;
-      byId("reddit-new-feed").hidden = false;
-    }
+function showNewFeed(feed) {
+  const link = byId("reddit-new-link");
+  if (feed) link.href = feed.url;
+  else link.removeAttribute("href");
+  link.hidden = !feed || feed.current;
+  byId("reddit-new-current").hidden = !feed?.current;
+  byId("reddit-new-feed").hidden = !feed;
+}
+
+async function sendToTab(tab, message) {
+  if (tab?.id == null) return;
+  try {
+    return await afl.api.tabs.sendMessage(tab.id, message);
+  } catch {
+    // The browser can decline a message to a page that is unavailable.
+  }
+}
+
+async function refreshCurrentTab() {
+  const request = ++tabRequest;
+  let tab;
+  try {
+    [tab] = await afl.api.tabs.query({ active: true, currentWindow: true });
   } catch {
     // Pasting a link works independently of the browser's tab permission.
   }
+  if (request !== tabRequest) return;
+
+  currentTab = tab;
+  useTab.disabled = !/^https?:\/\//i.test(tab?.url ?? "");
+  const feed = useTab.disabled ? null : afl.redditNewFeed(tab.url);
+  const [report, hasNewFeed] = await Promise.all([
+    sendToTab(tab, "afl:page-status"),
+    feed && sendToTab(tab, "afl:has-reddit-new"),
+  ]);
+  if (request !== tabRequest) return;
+
+  showPageStatus(report);
+  showNewFeed(hasNewFeed === true ? feed : null);
 }
+
+function refreshAfterNavigation() {
+  useTab.disabled = true;
+  showNewFeed(null);
+  showPageStatus(null, "Checking this tab…");
+  void refreshCurrentTab();
+}
+
+useTab.addEventListener("click", () => {
+  if (useTab.disabled) return;
+  clearResult();
+  originalLink.value = currentTab.url;
+  originalLink.focus();
+});
+
+afl.api.tabs?.onActivated?.addListener(refreshAfterNavigation);
+afl.api.tabs?.onUpdated?.addListener((tabId, changes) => {
+  if (tabId === currentTab?.id && (changes.url || changes.status)) refreshAfterNavigation();
+});
 
 originalLink.addEventListener("input", clearResult);
 
@@ -112,5 +198,5 @@ byId("copy-link").addEventListener("click", async () => {
   }
 });
 
-void initSettings();
-void initCurrentTab();
+initSettings();
+void refreshCurrentTab();

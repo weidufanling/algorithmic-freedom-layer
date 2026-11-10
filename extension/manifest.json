@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Algorithmic Freedom Layer",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Weidu Lab beta for hiding selected parts of YouTube and Reddit and cleaning supported share links.",
   "permissions": ["storage", "activeTab"],
   "action": {

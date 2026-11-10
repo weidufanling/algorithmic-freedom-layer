@@ -25,10 +25,14 @@
         <span>Hide Shorts</span>
       </label>
       <label class="choice">
-        <input type="checkbox" id="youtubeRecommendations" aria-describedby="youtube-note" disabled>
-        <span>Hide recommendations</span>
+        <input type="checkbox" id="youtubeHome" aria-describedby="youtube-home-note" disabled>
+        <span>Hide the Home feed</span>
       </label>
-      <p class="note" id="youtube-note">Hides the main Home feed and watch-page suggestions on supported layouts. The Home feed can also include subscriptions and news.</p>
+      <p class="note" id="youtube-home-note">The Home feed can include news and videos from channels you follow. You can still use the Subscriptions page.</p>
+      <label class="choice">
+        <input type="checkbox" id="youtubeWatchRecommendations" disabled>
+        <span>Hide suggestions on watch pages</span>
+      </label>
     </fieldset>
 
     <fieldset>
@@ -45,6 +49,19 @@
     </fieldset>
 
     <p class="status" id="settings-status" role="status"></p>
+
+    <section aria-labelledby="page-status-title">
+      <h2 id="page-status-title">On this page</h2>
+      <div class="status" role="status">
+        <p id="page-status-message">Checking this tab…</p>
+        <ul id="page-status-list" role="list" hidden>
+          <li id="page-youtubeShorts" hidden><strong>Shorts</strong> <span id="state-youtubeShorts"></span></li>
+          <li id="page-youtubeHome" hidden><strong>Home feed</strong> <span id="state-youtubeHome"></span></li>
+          <li id="page-youtubeWatchRecommendations" hidden><strong>Watch suggestions</strong> <span id="state-youtubeWatchRecommendations"></span></li>
+          <li id="page-redditTrending" hidden><strong>Trending shelves</strong> <span id="state-redditTrending"></span></li>
+        </ul>
+      </div>
+    </section>
 
     <section aria-labelledby="cleaner-title">
       <h2 id="cleaner-title">Clean a share link</h2>
